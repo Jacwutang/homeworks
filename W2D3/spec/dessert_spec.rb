@@ -19,11 +19,11 @@ describe Dessert do
     end
 
     it "starts ingredients as an empty array" do
-      expect(brownie.ingredients). to eq ([])
+      expect(brownie.ingredients).to eq ([])
     end
 
-    it "raises an argument error when given a non-integer quantity" do expect { Dessert.new("cake", "tons", chef) }.to raise_error(ArgumentError)
-
+    it "raises an argument error when given a non-integer quantity" do
+      expect {Dessert.new("cookie","100",chef)}.to raise_error(ArgumentError)
     end
   end
 
@@ -39,25 +39,25 @@ describe Dessert do
     it "shuffles the ingredient array" do
       ingredients = ["chocolate", "flour", "egg", "sugar", "butter"]
 
-        ingredients.each do |ingredient|
-          brownie.add_ingredient(ingredient)
-        end
+      ingredients.each do |el|
+        brownie.add_ingredient(el)
+      end
 
-        expect(brownie.ingredients).to eq(ingredients)
-        brownie.mix!
-        expect(brownie.ingredients).not_to eq(ingredients)
-        expect(brownie.ingredients.sort).to eq(ingredients.sort)
+      mixed_brownies = brownie.mix!
+      expect(mixed_brownies).not_to eq (brownie.ingredients.sort)
+
+    end
   end
-end
 
   describe "#eat" do
     it "subtracts an amount from the quantity" do
-      brownie.eat(5)
-      expect(brownie.quantity).to eq(95)
+      brownie.eat(50)
+      expect(brownie.quantity).to eq (50)
     end
 
     it "raises an error if the amount is greater than the quantity" do
-      expect {brownie.eat(500).to raise_error ("too manny")}
+      expect { brownie.eat(120)}.to raise_error("not enough left!")
+
   end
 
 end
@@ -75,4 +75,7 @@ end
       brownie.make_more
     end
   end
+
+
+
 end
