@@ -1,9 +1,10 @@
 class LRUCache
     def initialize
+      arr = []
     end
 
     def count
-      # returns number of elements currently in cache
+        arr.size # returns number of elements currently in cache
     end
 
     def add(el)
