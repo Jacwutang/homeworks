@@ -6966,14 +6966,9 @@ var receiveSearchGiphys = exports.receiveSearchGiphys = function receiveSearchGi
   };
 };
 
-// Export a function fetchSearchGiphysthat
-// Receives a search term
-// Returns a function that can be called with dispatch and uses a promise to dispatch receiveSearchGiphys with the received data after APIUtil.fetchSearchGiphys is successful.
-// Your thunk action creator should look like the following:
-
 var fetchSearchGiphys = exports.fetchSearchGiphys = function fetchSearchGiphys(searchTerm) {
   return function (dispatch) {
-    APIUtil.fetchSearchGiphys(searchTerm).then(function (giphys) {
+    return APIUtil.fetchSearchGiphys(searchTerm).then(function (giphys) {
       return dispatch(receiveSearchGiphys(giphys.data));
     });
   };
@@ -12085,7 +12080,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.configureStore = undefined;
 
 var _redux = __webpack_require__(57);
 
@@ -12099,9 +12093,11 @@ var _root_reducer2 = _interopRequireDefault(_root_reducer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var configureStore = exports.configureStore = function configureStore() {
-  return (0, _redux.createStore)(_root_reducer2.default);
+var configureStore = function configureStore() {
+  return (0, _redux.createStore)(_root_reducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 };
+
+exports.default = configureStore;
 
 /***/ }),
 /* 107 */
@@ -12148,25 +12144,25 @@ var _react = __webpack_require__(17);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _api_util = __webpack_require__(115);
-
-var _api_util2 = _interopRequireDefault(_api_util);
-
 var _giphys_index = __webpack_require__(108);
 
 var _giphys_index2 = _interopRequireDefault(_giphys_index);
 
 var _store = __webpack_require__(106);
 
+var _store2 = _interopRequireDefault(_store);
+
 var _giphy_actions = __webpack_require__(58);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import fetchSearchGiphys from '../util/api_util';
 document.addEventListener("DOMContentLoaded", function () {
-  var store = (0, _store.configureStore)();
+  var store = (0, _store2.default)();
   window.store = store;
-  window.fetchSearchGiphys = _api_util2.default;
-  window.receiveSearchGiphys = _giphy_actions.receiveSearchGiphys;
+  window.fetchSearchGiphys = _giphy_actions.fetchSearchGiphys;
+  // window.receiveSearchGiphys = receiveSearchGiphys;
+
 });
 
 /***/ }),
@@ -12278,14 +12274,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 // Let's write a function fetchSearchGiphys in api_util.js to make an AJAX call to the Giphy API. It will take a single argument, the searchTerm entered by a user. You can check out the Giphy API docs for more details, but in short, we want to make a GET request to http://api.giphy.com/v1/gifs/search?q=${search+term}&api_key=dc6zaTOxFJmzC&limit=2 where the ${search-term} is replaced with our actual query. We tag limit=2 onto the end of our query params to tell Giphy we only want two GIFs back. The giphy API is relatively slow, so keeping the response size down helps our app be a little faster.
-var fetchSearchGiphys = function fetchSearchGiphys(searchTerm) {
+var fetchSearchGiphys = exports.fetchSearchGiphys = function fetchSearchGiphys(searchTerm) {
   return $.ajax({
     method: 'GET',
     url: 'http://api.giphy.com/v1/gifs/search?q=' + searchTerm + '&api_key=dc6zaTOxFJmzC&limit=2'
   });
 };
-
-exports.default = fetchSearchGiphys;
 
 /***/ }),
 /* 116 */
